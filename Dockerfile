@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp
+FROM dunglas/frankenphp:php8.3-alpine
 
 # Install PHP extensions using install-php-extensions script
 RUN install-php-extensions pcntl pdo_mysql intl
