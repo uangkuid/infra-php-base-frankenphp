@@ -1,7 +1,7 @@
 FROM dunglas/frankenphp:php8.3-alpine
 
 # Install PHP extensions using install-php-extensions script
-RUN apk add --no-cache icu-libs mariadb-client-libs \
+RUN apk add --no-cache icu-libs \
  && install-php-extensions pcntl pdo_mysql intl
 
 # Install Composer
