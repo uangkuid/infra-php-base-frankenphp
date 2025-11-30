@@ -10,6 +10,7 @@ A precompiled Docker base image built on top of [FrankenPHP](https://frankenphp.
   - `pcntl` - Process control support
   - `pdo_mysql` - MySQL database support via PDO
   - `intl` - Internationalization functions
+  - `zip` - Zip archive support
 - Composer pre-installed for dependency management
 
 ## Image
@@ -64,6 +65,7 @@ docker run -p 8080:80 -v $(pwd):/app ghcr.io/uangkuid/infra-php-base-frankenphp:
 | pcntl | Process Control - allows PHP to create child processes |
 | pdo_mysql | PDO driver for MySQL databases |
 | intl | Internationalization extension for locale-aware operations |
+| zip | Zip archive extension for reading and writing zip files |
 
 ## Building Locally
 
