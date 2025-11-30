@@ -5,6 +5,7 @@ A precompiled Docker base image built on top of [FrankenPHP](https://frankenphp.
 ## Features
 
 - Based on `dunglas/frankenphp` - a modern PHP application server
+- **Multi-architecture support**: `linux/amd64` and `linux/arm64`
 - Pre-installed PHP extensions:
   - `pcntl` - Process control support
   - `pdo_mysql` - MySQL database support via PDO
