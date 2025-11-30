@@ -17,7 +17,7 @@ A precompiled Docker base image built on top of [FrankenPHP](https://frankenphp.
 The image is available on GitHub Container Registry:
 
 ```
-ghcr.io/oratakashi/uangku-infra-frankenphp:latest
+ghcr.io/uangkuid/infra-php-base-frankenphp:latest
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ ghcr.io/oratakashi/uangku-infra-frankenphp:latest
 ### Pull the Image
 
 ```bash
-docker pull ghcr.io/oratakashi/uangku-infra-frankenphp:latest
+docker pull ghcr.io/uangkuid/infra-php-base-frankenphp:latest
 ```
 
 ### Use as Base Image
@@ -33,7 +33,7 @@ docker pull ghcr.io/oratakashi/uangku-infra-frankenphp:latest
 Create your own `Dockerfile` using this as the base:
 
 ```dockerfile
-FROM ghcr.io/oratakashi/uangku-infra-frankenphp:latest
+FROM ghcr.io/uangkuid/infra-php-base-frankenphp:latest
 
 # Copy your application
 COPY . /app
@@ -47,7 +47,7 @@ RUN composer install --no-dev --optimize-autoloader
 ### Run a Container
 
 ```bash
-docker run -p 8080:80 -v $(pwd):/app ghcr.io/oratakashi/uangku-infra-frankenphp:latest
+docker run -p 8080:80 -v $(pwd):/app ghcr.io/uangkuid/infra-php-base-frankenphp:latest
 ```
 
 ## Included Tools
