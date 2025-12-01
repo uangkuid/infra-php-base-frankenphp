@@ -41,11 +41,27 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCRIO }}
 
+      - name: Get commit message
+        id: commit
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if [ -n "$COMMIT_MESSAGE" ]; then
+            MESSAGE=$(echo "$COMMIT_MESSAGE" | head -1)
+          else
+            MESSAGE=$(git log -1 --pretty=%s)
+          fi
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$MESSAGE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          labels: |
+            org.opencontainers.image.description=${{ steps.commit.outputs.message }}
 
       - name: Build and push by digest
         id: build
@@ -99,6 +115,25 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCRIO }}
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get commit message
+        id: commit
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if [ -n "$COMMIT_MESSAGE" ]; then
+            MESSAGE=$(echo "$COMMIT_MESSAGE" | head -1)
+          else
+            MESSAGE=$(git log -1 --pretty=%s)
+          fi
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$MESSAGE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -107,11 +142,17 @@ jobs:
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha
+          annotations: |
+            org.opencontainers.image.description=${{ steps.commit.outputs.message }}
 
       - name: Create manifest list and push
         working-directory: /tmp/digests
+        env:
+          COMMIT_MESSAGE: ${{ steps.commit.outputs.message }}
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          docker buildx imagetools create \
+            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            --annotation "index:org.opencontainers.image.description=${COMMIT_MESSAGE}" \
             $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
 
       - name: Inspect image
