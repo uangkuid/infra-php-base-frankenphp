@@ -77,7 +77,11 @@ docker build -t uangku-infra-frankenphp .
 
 ## GitHub Actions
 
-This repository includes a GitHub Actions workflow that automatically builds and pushes the Docker image to GitHub Container Registry on every push to the `main` branch.
+This repository includes a GitHub Actions workflow that automatically builds and pushes the Docker image to GitHub Container Registry:
+
+- **On push to `main` branch**: Builds and pushes immediately
+- **Scheduled builds**: Every Monday at 02:37 UTC to ensure fresh builds with latest base image updates
+- **Manual trigger**: Can be triggered manually via GitHub Actions UI
 
 ### Required Secrets
 
